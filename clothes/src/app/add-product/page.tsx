@@ -22,18 +22,18 @@ export default function AddProductPage() {
       });
 
       if (res.ok) {
-        setMessage("✅ Tạo sản phẩm thành công!");
+        setMessage("Tạo sản phẩm thành công!");
         setTimeout(() => {
           router.push("/");
           router.refresh();
         }, 1200);
       } else {
         const error = await res.json();
-        setMessage(`❌ Tạo thất bại: ${error.error || "Unknown error"}`);
+        setMessage(`Tạo thất bại: ${error.error || "Unknown error"}`);
       }
     } catch (err) {
       console.error(err);
-      setMessage("❌ Tạo thất bại: Lỗi kết nối");
+      setMessage("Tạo thất bại: Lỗi kết nối");
     } finally {
       setLoading(false);
     }

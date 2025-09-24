@@ -3,11 +3,12 @@ import prisma from "../../../../../lib/prisma";
 import { writeFile } from "fs/promises";
 import path from "path";
 
+// ================== GET ==================
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
-  const { id } = params;
+  const { id } = await context.params; // 👈 phải await
   const product = await prisma.product.findUnique({ where: { id } });
   if (!product) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
@@ -15,12 +16,13 @@ export async function GET(
   return NextResponse.json(product);
 }
 
+// ================== PUT ==================
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params;
+    const { id } = await context.params; // 👈 phải await
     const contentType = req.headers.get("content-type") || "";
     let data: any = {};
     let imageUrl: string | undefined;
@@ -29,6 +31,7 @@ export async function PUT(
       const formData = await req.formData();
       data.name = formData.get("name") as string | null;
       data.description = formData.get("description") as string | null;
+
       const priceRaw = formData.get("price") as string | null;
       data.price = priceRaw ? parseFloat(priceRaw) : undefined;
 
@@ -37,8 +40,10 @@ export async function PUT(
         const uploadsDir = path.join(process.cwd(), "public", "uploads");
         const fileName = `${Date.now()}-${file.name.replace(/\s+/g, "-")}`;
         const filePath = path.join(uploadsDir, fileName);
+
         const buffer = Buffer.from(await file.arrayBuffer());
         await writeFile(filePath, buffer);
+
         imageUrl = `/uploads/${fileName}`;
       }
     } else {
@@ -63,12 +68,13 @@ export async function PUT(
   }
 }
 
+// ================== DELETE ==================
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params;
+    const { id } = await context.params; // 👈 phải await
     const product = await prisma.product.findUnique({ where: { id } });
     if (!product) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });

@@ -4,7 +4,7 @@
 
 Object.defineProperty(exports, "__esModule", { value: true });
 
-const {
+import {
   PrismaClientKnownRequestError,
   PrismaClientUnknownRequestError,
   PrismaClientRustPanicError,
@@ -15,18 +15,14 @@ const {
   empty,
   join,
   raw,
-  skip,
   Decimal,
   Debug,
   objectEnumValues,
   makeStrictEnum,
   Extensions,
-  warnOnce,
   defineDmmfProperty,
   Public,
-  getRuntime,
-  createParam,
-} = require('./runtime/wasm-engine-edge.js')
+} from './runtime/wasm-engine-edge.js'
 
 
 const Prisma = {}
