@@ -10,13 +10,12 @@ module.exports = {
     "plugin:@typescript-eslint/recommended",
   ],
   rules: {
-    // tắt rule global nếu muốn
-    // "@typescript-eslint/no-require-imports": "off",
+    // Các rule chung của project
   },
   overrides: [
     {
-      // tắt rule riêng cho Prisma generated code
-      files: ["**/node_modules/.prisma/client/**"],
+      // Tắt rule require() cho Prisma client
+      files: ["src/prisma/**"],
       rules: {
         "@typescript-eslint/no-require-imports": "off",
       },
